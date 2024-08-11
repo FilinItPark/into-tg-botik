@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Slf4j
@@ -44,8 +45,10 @@ public class UserRepository {
         return null;
     }
 
-    public User getByTelegramId(long telegramId) {
+    public Optional<User> getByTelegramId(long telegramId) {
         User user = null;
+
+        var start = System.currentTimeMillis();
 
         try {
             final PreparedStatement preparedStatement = connection.prepareStatement("""
@@ -69,11 +72,27 @@ public class UserRepository {
         } catch (SQLException exception) {
             log.error("SQLException: {}", exception.getMessage());
         }
+        var end = System.currentTimeMillis();
 
-        return user;
+        log.info("Время выполнения запроса: {} ms", end - start);
+        return Optional.of(user);
     }
 
     public void create(User user) {
+        try {
+            final PreparedStatement preparedStatement = connection.prepareStatement("""
+                    insert into users (name, balance, telegramid,password) values (?,?,?,?); 
+                    """);
 
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setDouble(2, user.getBalance());
+            preparedStatement.setLong(3, user.getTelegramId());
+            preparedStatement.setString(4, user.getPassword());
+
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
     }
 }

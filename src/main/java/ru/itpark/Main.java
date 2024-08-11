@@ -6,6 +6,8 @@ import ru.itpark.handlers.MessageListenerHandler;
 import ru.itpark.infrastructure.db.DbManager;
 import ru.itpark.secrets.SecretManager;
 
+import java.util.concurrent.ExecutorService;
+
 
 @Slf4j
 public class Main {
@@ -18,7 +20,11 @@ public class Main {
         try (TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication()) {
             botsApplication.registerBot(SecretManager.getToken(), new MessageListenerHandler());
 
-            db.getUserRepo().getAll();
+//            db.getUserRepo().getAll();
+
+//            db.createUser("Ivan", 5000.0, 12345L, "qwerty");
+            System.out.println("Успешно авторизовались: " + db.authorizeUser(12345L, "qwerty"));
+            System.out.println(db.authorizeUser(12345L, "wqwerty"));
 
 
             log.info("Bot registered");
