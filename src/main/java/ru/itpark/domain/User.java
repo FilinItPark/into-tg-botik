@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 public class User {
     private int id;
+    private long telegramId;
     private String name;
-    private String username;
     private String password;
     private double balance;
 

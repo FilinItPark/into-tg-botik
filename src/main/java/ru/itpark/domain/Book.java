@@ -2,6 +2,8 @@ package ru.itpark.domain;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -13,5 +15,5 @@ public class Book {
     private String author;
     private double price;
 
-    private Category category;
+    private List<Category> category;
 }
