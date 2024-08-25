@@ -4,6 +4,6 @@ import lombok.Getter;
 
 public class SecretManager {
     @Getter
-    private static final String token = "7025611092:AAHcF3J3oT5lV2QZai91_W-ljvFXKFbR92s";
+    private static final String token = "7520195526:AAEnSZ-lJcme-xI-VI64VPD9mN4CU1pc1ps";
 
 }

@@ -9,8 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 @Slf4j
@@ -26,15 +28,7 @@ public class UserRepository {
             final List<User> users = new ArrayList<>();
 
             while (resultSet.next()) {
-                final User build = User.builder()
-                        .id(resultSet.getInt("id"))
-                        .name(resultSet.getString("name"))
-                        .balance(resultSet.getFloat("balance"))
-                        .telegramId(resultSet.getLong("telegramId"))
-                        .password(resultSet.getString("password"))
-                        .build();
-
-                users.add(build);
+                users.add(User.createNew(resultSet));
             }
 
             return users;
@@ -60,14 +54,7 @@ public class UserRepository {
             final ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                user = User.builder()
-                        .id(resultSet.getInt("id"))
-                        .name(resultSet.getString("name"))
-                        .balance(resultSet.getFloat("balance"))
-                        .telegramId(resultSet.getLong("telegramId"))
-                        .password(resultSet.getString("password"))
-                        .build();
-
+                user = User.createNew(resultSet);
             }
         } catch (SQLException exception) {
             log.error("SQLException: {}", exception.getMessage());
